@@ -1,22 +1,31 @@
 /* Author: Steve Heller
  * 
- * Headerfile for editorFunctions.c
  * Includes all the functions that the server has to handle.
  * For a further explaination please see document "Funktionen Editor"
  *
  */
 
-#ifndef EDITORFUNCTIONS_H_INCLUDED
-#define EDITORFUNCTIONS_H_INCLUDED
+#ifndef EDITORFUNCTIONS_H_FILE
+#define EDITORFUNCTIONS_H_FILE
 
-void InsertLines();
+void InsertLines() {
+  printf("Starting function InsertLines\n");
+}
 
-void ReplaceLines();
+void ReplaceLines() {
+  printf("Starting function ReplaceLines\n");
+}
 
-void ReadLines();
+void ReadLines() {
+  printf("Starting function ReadLines\n");
+}
 
-void DeleteLines();
+void DeleteLines() {
+  printf("Starting function DeleteLines\n");
+}
 
-void NumLines();
+void NumLines() {
+  printf("Starting function NumLines\n");
+}
 
 #endif
