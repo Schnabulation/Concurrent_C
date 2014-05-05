@@ -18,16 +18,16 @@
 #include "editorFunctions.h"
 
 void runCommand(char inputArg[]) {
-  if (strcmp(inputArg,"InsertLines") == 0) {
-    InsertLines();
-  } else if (strcmp(inputArg,"ReplceLines") == 0) {
-    ReplaceLines();
-  } else if (strcmp(inputArg,"ReadLines") == 0) {
-    ReadLines();
-  } else if (strcmp(inputArg,"DeleteLines") == 0) {
-    DeleteLines();
-  } else if (strcmp(inputArg,"NumLines") == 0) {
-    NumLines();
+  if (strncmp(inputArg,"InsertLines",3) == 0) {
+    InsertLines(inputArg);
+  } else if (strncmp(inputArg,"ReplaceLines",3) == 0) {
+    ReplaceLines(inputArg);
+  } else if (strncmp(inputArg,"ReadLines",3) == 0) {
+    ReadLines(inputArg);
+  } else if (strncmp(inputArg,"DeleteLines",3) == 0) {
+    DeleteLines(inputArg);
+  } else if (strncmp(inputArg,"NumLines",3) == 0) {
+    NumLines(inputArg);
   } else {
     printf("Invalid command\n");
   }

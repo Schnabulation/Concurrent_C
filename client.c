@@ -34,6 +34,8 @@ void main() {
   serverAddress.sin_addr.s_addr = inet_addr(server_ip);
   serverAddress.sin_port = server_port;
 
+  printf("CONNECTED!\n");
+
   int breakUp = 0;
   while (breakUp == 0) {
     char input_string[256];
