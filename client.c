@@ -53,10 +53,9 @@ void main() {
       breakUp = 1;
     }
     inputStringLen = strlen(input_string);
-
     int count = send(sock, input_string, inputStringLen, 0);
     if (count != inputStringLen) {
-      error("send() sent a different number of bytes than expected");
+      perror("send() sent a different number of bytes than expected");
     }
   }
   close(sock);

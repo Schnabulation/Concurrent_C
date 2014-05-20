@@ -18,7 +18,6 @@
 #include "editorFunctions.h"
 
 void runCommand(char inputArg[]) {
-  printf("Process: %ld\n", (long)getpid());
   if (strncmp(inputArg,"InsertLines",3) == 0) {
     InsertLines(inputArg);
   } else if (strncmp(inputArg,"ReplaceLines",3) == 0) {
@@ -35,9 +34,6 @@ void runCommand(char inputArg[]) {
 }
 
 void startServer() {
-  printf("Starting Server!\n");
-  printf("Please hold on...\n");
-  
   struct sockaddr_in serverAddress;
   struct sockaddr_in clientAddress;
   unsigned int clientAddressLen;
@@ -55,17 +51,15 @@ void startServer() {
   }
 
   listen(sock, 5);
-  
+  printf("Server started - waiting for connection on Port %i\n",serverAddress.sin_port); 
   while(1) {
-    printf("Server started - waiting for connection on Port %i\n",serverAddress.sin_port);
     int clientSock = accept(sock, (struct sockaddr *) & clientAddress, &clientAddressLen);
     childpid = fork();
     if (childpid == -1) {
       perror("Fork failed!");
     }
     if (childpid == 0) {
-      close(sock);
-      printf("Client connected!\n");   
+      printf("Client connected with process %ld!\n", (long)getpid());   
       while (1) {
         char buffer[256];
         bzero(buffer,256);  
@@ -82,9 +76,7 @@ void startServer() {
     } else {
     }
   }
-  if (childpid != 0) {
-    close(sock);
-  }
+  close(sock);
 }
 
 void main(int argc, char *argv[]) {

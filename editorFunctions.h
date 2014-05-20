@@ -9,12 +9,17 @@
 #define EDITORFUNCTIONS_H_FILE
 
 void InsertLines(char inputArg[]) {
-  
   char *command = strtok(inputArg," ");
-  int startNum = atoi(strtok(NULL," "));
-  int numLines = atoi(strtok(NULL," "));
+  char *tmpNum = strtok(NULL," ");
+  char *tmpLines = strtok(NULL," ");
 
-  printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+  if (tmpNum == NULL || tmpLines == NULL) {
+    printf("%s: Wrong use of command!\n", command);
+  } else {
+    int startNum = atoi(tmpNum);
+    int numLines = atoi(tmpLines);
+    printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+  }
 }
 
 void ReplaceLines(char inputArg[]) {
