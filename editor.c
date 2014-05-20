@@ -18,6 +18,7 @@
 #include "editorFunctions.h"
 
 void runCommand(char inputArg[]) {
+  printf("Process: %ld\n", (long)getpid());
   if (strncmp(inputArg,"InsertLines",3) == 0) {
     InsertLines(inputArg);
   } else if (strncmp(inputArg,"ReplaceLines",3) == 0) {
@@ -36,40 +37,54 @@ void runCommand(char inputArg[]) {
 void startServer() {
   printf("Starting Server!\n");
   printf("Please hold on...\n");
-
-  char buffer[256];
-
-  int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
+  
   struct sockaddr_in serverAddress;
   struct sockaddr_in clientAddress;
   unsigned int clientAddressLen;
+  pid_t childpid;
+
+  int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);  
 
   memset(&serverAddress, 0, sizeof(serverAddress));
   serverAddress.sin_family = AF_INET;
   serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
-  serverAddress.sin_port = 2354;
+  serverAddress.sin_port = 2354; 
 
   if (bind(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0) {
-     error("ERROR on binding");
+    perror("ERROR on binding");
   }
-  listen(sock, 5);
-  printf("Server started - waiting for connection on Port %i\n",serverAddress.sin_port);
 
-  int breakUp = 0;
-  while (breakUp == 0) {
+  listen(sock, 5);
+  
+  while(1) {
+    printf("Server started - waiting for connection on Port %i\n",serverAddress.sin_port);
     int clientSock = accept(sock, (struct sockaddr *) & clientAddress, &clientAddressLen);
-    bzero(buffer,256);  
-    read(clientSock,buffer,255);
-    if (strcmp(buffer,"EXIT") == 0) {
-      printf("Client disconnected\n");
-      breakUp = 1;
-    } else {
-      runCommand(buffer);
+    childpid = fork();
+    if (childpid == -1) {
+      perror("Fork failed!");
     }
-    close(clientSock);
+    if (childpid == 0) {
+      close(sock);
+      printf("Client connected!\n");   
+      while (1) {
+        char buffer[256];
+        bzero(buffer,256);  
+        read(clientSock,buffer,255);
+        if (strcmp(buffer,"EXIT") == 0) {
+          printf("Client disconnected\n");
+          break;
+        } else {
+          runCommand(buffer);
+        }
+      }
+      close(clientSock);
+      break;
+    } else {
+    }
   }
-  close(sock);
+  if (childpid != 0) {
+    close(sock);
+  }
 }
 
 void main(int argc, char *argv[]) {

@@ -34,6 +34,9 @@ void main() {
   serverAddress.sin_addr.s_addr = inet_addr(server_ip);
   serverAddress.sin_port = server_port;
 
+  sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+  connect(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress));
+
   printf("CONNECTED!\n");
 
   int breakUp = 0;
@@ -50,13 +53,11 @@ void main() {
       breakUp = 1;
     }
     inputStringLen = strlen(input_string);
-    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    connect(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress));
+
     int count = send(sock, input_string, inputStringLen, 0);
     if (count != inputStringLen) {
       error("send() sent a different number of bytes than expected");
     }
-    close(sock);
   }
-
+  close(sock);
 }
