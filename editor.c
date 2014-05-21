@@ -40,15 +40,31 @@ void processInput(char inputArg[]) {
     case 1:
       InsertLines(inputArg);
       break;
+    case 2:
+      ReplaceLines(inputArg);
+      break;
+    case 3:
+      ReadLines(inputArg);
+      break;
+    case 4:
+      DeleteLines(inputArg);
+      break;
+    case 5:
+      NumLines(inputArg);
+      break;
   }
+  sleep(1);
 }
 
 void runProcess(int clientSock) {
   printf("Client connected with process %ld!\n", (long)getpid());   
   while (1) {
     char buffer[256];
-    bzero(buffer,256);  
-    read(clientSock,buffer,255);
+    recv(clientSock,buffer,255,0);
+    if (buffer <= 0) {
+      printf("Client disconnected\n");
+      break;
+    }
     if (strcmp(buffer,"EXIT") == 0) {
       printf("Client disconnected\n");
       break;
