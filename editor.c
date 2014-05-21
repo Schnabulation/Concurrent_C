@@ -33,6 +33,22 @@ void runCommand(char inputArg[]) {
   }
 }
 
+void runProcess(int clientSock) {
+  printf("Client connected with process %ld!\n", (long)getpid());   
+  while (1) {
+    char buffer[256];
+    bzero(buffer,256);  
+    read(clientSock,buffer,255);
+    if (strcmp(buffer,"EXIT") == 0) {
+      printf("Client disconnected\n");
+    break;
+    } else {
+      runCommand(buffer);
+    }
+  }
+  close(clientSock);
+}
+
 void startServer() {
   struct sockaddr_in serverAddress;
   struct sockaddr_in clientAddress;
@@ -59,21 +75,10 @@ void startServer() {
       perror("Fork failed!");
     }
     if (childpid == 0) {
-      printf("Client connected with process %ld!\n", (long)getpid());   
-      while (1) {
-        char buffer[256];
-        bzero(buffer,256);  
-        read(clientSock,buffer,255);
-        if (strcmp(buffer,"EXIT") == 0) {
-          printf("Client disconnected\n");
-          break;
-        } else {
-          runCommand(buffer);
-        }
-      }
-      close(clientSock);
+      runProcess(clientSock);
       break;
     } else {
+      // if there is something that only the parent-process should do, put it here
     }
   }
   close(sock);
