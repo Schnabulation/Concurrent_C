@@ -17,19 +17,29 @@
 #include <netinet/tcp.h>
 #include "editorFunctions.h"
 
-void runCommand(char inputArg[]) {
-  if (strncmp(inputArg,"InsertLines",3) == 0) {
-    InsertLines(inputArg);
-  } else if (strncmp(inputArg,"ReplaceLines",3) == 0) {
-    ReplaceLines(inputArg);
-  } else if (strncmp(inputArg,"ReadLines",3) == 0) {
-    ReadLines(inputArg);
-  } else if (strncmp(inputArg,"DeleteLines",3) == 0) {
-    DeleteLines(inputArg);
-  } else if (strncmp(inputArg,"NumLines",3) == 0) {
-    NumLines(inputArg);
-  } else {
-    printf("Invalid command\n");
+// this int is needed for the check if a command is waiting for more input
+int isInCommand = 0;
+
+void processInput(char inputArg[]) {
+  switch (isInCommand) {
+    case 0:
+      if (strncmp(inputArg,"InsertLines",3) == 0) {
+        InsertLines(inputArg);
+      } else if (strncmp(inputArg,"ReplaceLines",3) == 0) {
+        ReplaceLines(inputArg);
+      } else if (strncmp(inputArg,"ReadLines",3) == 0) {
+        ReadLines(inputArg);
+      } else if (strncmp(inputArg,"DeleteLines",3) == 0) {
+        DeleteLines(inputArg);
+      } else if (strncmp(inputArg,"NumLines",3) == 0) {
+        NumLines(inputArg);
+      } else {
+        printf("Invalid command\n");
+      }
+      break;
+    case 1:
+      InsertLines(inputArg);
+      break;
   }
 }
 
@@ -41,9 +51,9 @@ void runProcess(int clientSock) {
     read(clientSock,buffer,255);
     if (strcmp(buffer,"EXIT") == 0) {
       printf("Client disconnected\n");
-    break;
+      break;
     } else {
-      runCommand(buffer);
+      processInput(buffer);
     }
   }
   close(clientSock);

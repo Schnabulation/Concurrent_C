@@ -8,17 +8,25 @@
 #ifndef EDITORFUNCTIONS_H_FILE
 #define EDITORFUNCTIONS_H_FILE
 
-void InsertLines(char inputArg[]) {
-  char *command = strtok(inputArg," ");
-  char *tmpNum = strtok(NULL," ");
-  char *tmpLines = strtok(NULL," ");
+extern int isInCommand;
 
-  if (tmpNum == NULL || tmpLines == NULL) {
-    printf("%s: Wrong use of command!\n", command);
+void InsertLines(char inputArg[]) {
+  if (isInCommand == 0) {
+    char *command = strtok(inputArg," ");
+    char *tmpNum = strtok(NULL," ");
+    char *tmpLines = strtok(NULL," ");
+
+    if (tmpNum == NULL || tmpLines == NULL) {
+      printf("%s: Wrong use of command!\n", command);
+    } else {
+      int startNum = atoi(tmpNum);
+      int numLines = atoi(tmpLines);
+      printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+    }
+    isInCommand = 1;
   } else {
-    int startNum = atoi(tmpNum);
-    int numLines = atoi(tmpLines);
-    printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+    printf("You inserted this line: %s\n", inputArg);
+    isInCommand = 0;
   }
 }
 

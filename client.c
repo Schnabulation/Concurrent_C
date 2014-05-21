@@ -14,7 +14,6 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
-#include "editorFunctions.h"
 
 void main() {
   printf("Starting Client!\n");
