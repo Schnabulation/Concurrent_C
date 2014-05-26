@@ -5,10 +5,15 @@
  *
  */
 
+#include "lockingFunctions.h"
+
 #ifndef EDITORFUNCTIONS_H_FILE
 #define EDITORFUNCTIONS_H_FILE
 
 extern int isInCommand;
+
+int editingStartLine;
+int editingNumOfLines;
 
 void InsertLines(char inputArg[]) {
   if (isInCommand == 0) {
@@ -21,11 +26,21 @@ void InsertLines(char inputArg[]) {
     } else {
       int startNum = atoi(tmpNum);
       int numLines = atoi(tmpLines);
-      printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
-      isInCommand = 1;
+      if (isLineLocked(startNum) == 1) {
+        printf("Line is locked\n");
+      } else {
+        editingStartLine = startNum;
+        editingNumOfLines = numLines;
+        printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+        isInCommand = 1;
+        lockMultipleLines(startNum, (startNum+numLines));
+      }
     }
   } else {
     printf("You inserted this line: %s\n", inputArg);
+    unlockMultipleLines(editingStartLine, (editingStartLine+editingNumOfLines));
+    editingStartLine = 0;
+    editingNumOfLines = 0;
     isInCommand = 0;
   }
 }

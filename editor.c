@@ -17,9 +17,11 @@
 #include <netinet/tcp.h>
 #include "editorFunctions.h"
 #include "lockingFunctions.h"
+#include <signal.h>
 
 // this int is needed for the check if a command is waiting for more input
 int isInCommand = 0;
+int sock;
 
 void processInput(char inputArg[]) {
   switch (isInCommand) {
@@ -55,7 +57,6 @@ void processInput(char inputArg[]) {
       NumLines(inputArg);
       break;
   }
-  sleep(1);
 }
 
 void runProcess(int clientSock) {
@@ -69,12 +70,15 @@ void runProcess(int clientSock) {
 }
 
 void startServer() {
+  if (setup_shm() == 1) {
+    perror("Error on setup_shm!\n");
+  }
   struct sockaddr_in serverAddress;
   struct sockaddr_in clientAddress;
   unsigned int clientAddressLen;
   pid_t childpid;
 
-  int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);  
+  sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);  
 
   memset(&serverAddress, 0, sizeof(serverAddress));
   serverAddress.sin_family = AF_INET;
@@ -103,6 +107,14 @@ void startServer() {
   close(sock);
 }
 
+void shutdownServer() {
+  printf("Server shutting down...\n");
+  shutdown_shm();
+  close(sock);
+  exit(0);
+}
+
 void main(int argc, char *argv[]) {
+  signal(SIGINT, shutdownServer);
   startServer();
 }
