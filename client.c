@@ -14,12 +14,21 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <signal.h>
+
+int sock;
+
+void shutdownClient() {
+  send(sock, "EXIT", 4, 0);
+  close(sock);
+  exit(0);
+}
 
 void main() {
+  signal(SIGINT, shutdownClient);
   printf("Starting Client!\n");
   printf("Please wait...\n");
 
-  int sock;
   struct sockaddr_in serverAddress;
   unsigned short server_port;
   char *server_ip;
@@ -37,7 +46,6 @@ void main() {
   connect(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress));
 
   printf("CONNECTED!\n");
-
   int breakUp = 0;
   while (breakUp == 0) {
     char input_string[256];

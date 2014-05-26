@@ -26,15 +26,14 @@ void InsertLines(char inputArg[]) {
     } else {
       int startNum = atoi(tmpNum);
       int numLines = atoi(tmpLines);
-      if (isLineLocked(startNum) == 1) {
-        printf("Line is locked\n");
-      } else {
-        editingStartLine = startNum;
-        editingNumOfLines = numLines;
-        printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
-        isInCommand = 1;
-        lockMultipleLines(startNum, (startNum+numLines));
+      while (isLineLocked(startNum) == 1) {
+        sleep(1);
       }
+      editingStartLine = startNum;
+      editingNumOfLines = numLines;
+      printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+      isInCommand = 1;
+      lockMultipleLines(startNum, (startNum+numLines));
     }
   } else {
     printf("You inserted this line: %s\n", inputArg);
