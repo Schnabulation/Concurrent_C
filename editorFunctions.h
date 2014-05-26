@@ -10,8 +10,6 @@
 
 extern int isInCommand;
 
-
-
 void InsertLines(char inputArg[]) {
   if (isInCommand == 0) {
     char *command = strtok(inputArg," ");
@@ -24,10 +22,9 @@ void InsertLines(char inputArg[]) {
       int startNum = atoi(tmpNum);
       int numLines = atoi(tmpLines);
       printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+      isInCommand = 1;
     }
-    isInCommand = 1;
   } else {
-
     printf("You inserted this line: %s\n", inputArg);
     isInCommand = 0;
   }

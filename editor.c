@@ -16,6 +16,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include "editorFunctions.h"
+#include "lockingFunctions.h"
 
 // this int is needed for the check if a command is waiting for more input
 int isInCommand = 0;
@@ -34,7 +35,8 @@ void processInput(char inputArg[]) {
       } else if (strncmp(inputArg,"NumLines",3) == 0) {
         NumLines(inputArg);
       } else {
-        printf("Invalid command\n");
+        printf("Invalid command - force disconnect!\n");
+	exit(1);
       }
       break;
     case 1:
@@ -61,16 +63,7 @@ void runProcess(int clientSock) {
   while (1) {
     char buffer[256];
     recv(clientSock,buffer,255,0);
-    if (buffer <= 0) {
-      printf("Client disconnected\n");
-      break;
-    }
-    if (strcmp(buffer,"EXIT") == 0) {
-      printf("Client disconnected\n");
-      break;
-    } else {
-      processInput(buffer);
-    }
+    processInput(buffer);
   }
   close(clientSock);
 }
