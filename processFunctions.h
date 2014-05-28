@@ -9,7 +9,7 @@
 #define PROCESSFUNCTIONS_H_FILE
 
 int isInCommand = 0;
-char buffer[256];
+char buffer[1024];
 int clientSock;
 
 void printToClient(char stringToSend[]) {
@@ -63,9 +63,8 @@ void runProcess(int sock) {
   printf("Client connected with process %ld!\n", (long)getpid());   
   while (1) {
     memset(buffer, 0, sizeof(buffer));
-    recv(clientSock,buffer,255,0);
+    recv(clientSock,buffer,1023,0);
     processInput(buffer);
-    printToClient("I did some stuff!");
   }
   close(clientSock);
 }
