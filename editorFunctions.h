@@ -5,8 +5,6 @@
  *
  */
 
-#include "lockingFunctions.h"
-
 #ifndef EDITORFUNCTIONS_H_FILE
 #define EDITORFUNCTIONS_H_FILE
 
@@ -31,16 +29,27 @@ void InsertLines(char inputArg[]) {
       }
       editingStartLine = startNum;
       editingNumOfLines = numLines;
-      printf("%s: You want to insert %i lines starting from line number %i!\n", command, numLines, startNum);
+      printf("You want to insert %i lines starting from line number %i!\n", numLines, startNum);
       isInCommand = 1;
       lockMultipleLines(startNum, (startNum+numLines));
     }
   } else {
-    printf("You inserted this line: %s\n", inputArg);
-    unlockMultipleLines(editingStartLine, (editingStartLine+editingNumOfLines));
-    editingStartLine = 0;
-    editingNumOfLines = 0;
-    isInCommand = 0;
+    if (editingNumOfLines > 1) {
+      // here comes the file modification
+      // do stuff for the first n lines!
+      printf("Line %i: %s\n", editingStartLine, inputArg);
+      unlockLine(editingStartLine);
+      editingStartLine++;
+      editingNumOfLines--;
+    } else {
+      // here comes the file modification
+      // do stuff for the last line!
+      printf("Line %i: %s\n", editingStartLine, inputArg);
+      unlockLine(editingStartLine);
+      editingStartLine = 0;
+      editingNumOfLines = 0;
+      isInCommand = 0;
+    }
   }
 }
 
