@@ -9,6 +9,7 @@
 #define PROCESSFUNCTIONS_H_FILE
 
 int isInCommand = 0;
+char buffer[256];
 
 void processInput(char inputArg[]) {
   switch (isInCommand) {
@@ -49,7 +50,7 @@ void processInput(char inputArg[]) {
 void runProcess(int clientSock) {
   printf("Client connected with process %ld!\n", (long)getpid());   
   while (1) {
-    char buffer[256];
+    memset(buffer, 0, sizeof(buffer));
     recv(clientSock,buffer,255,0);
     processInput(buffer);
   }
