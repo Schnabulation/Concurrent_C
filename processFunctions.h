@@ -10,6 +10,12 @@
 
 int isInCommand = 0;
 char buffer[256];
+int clientSock;
+
+void printToClient(char stringToSend[]) {
+  char *sendText = stringToSend; 
+  send(clientSock, sendText, strlen(sendText), 0);
+}
 
 void processInput(char inputArg[]) {
   if (strcmp(inputArg,"EXIT") != 0) {
@@ -52,12 +58,14 @@ void processInput(char inputArg[]) {
   }
 }
 
-void runProcess(int clientSock) {
+void runProcess(int sock) {
+  clientSock = sock;
   printf("Client connected with process %ld!\n", (long)getpid());   
   while (1) {
     memset(buffer, 0, sizeof(buffer));
     recv(clientSock,buffer,255,0);
     processInput(buffer);
+    printToClient("I did some stuff!");
   }
   close(clientSock);
 }

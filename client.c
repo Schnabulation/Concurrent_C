@@ -64,6 +64,10 @@ void main() {
     if (count != inputStringLen) {
       perror("send() sent a different number of bytes than expected");
     }
+    char answer[256];
+    memset(answer, 0, sizeof(answer));
+    recv(sock,answer,255,0);
+    printf("Server answered: %s\n", answer);
   }
   close(sock);
 }
