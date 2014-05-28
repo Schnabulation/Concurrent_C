@@ -31,7 +31,7 @@ void InsertLines(char inputArg[]) {
       }
       editingStartLine = startNum;
       editingNumOfLines = numLines;
-      printf("%s: You want to insert %i lines starting from line number %i!\n", command, startNum, numLines);
+      printf("%s: You want to insert %i lines starting from line number %i!\n", command, numLines, startNum);
       isInCommand = 1;
       lockMultipleLines(startNum, (startNum+numLines));
     }
