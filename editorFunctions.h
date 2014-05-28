@@ -24,17 +24,17 @@ void InsertLines(char inputArg[]) {
     } else {
       int startNum = atoi(tmpNum);
       int numLines = atoi(tmpLines);
-      while (isLineLocked(startNum) == 1) {
-        sleep(1);
-      }
       editingStartLine = startNum;
       editingNumOfLines = numLines;
       printf("You want to insert %i lines starting from line number %i!\n", numLines, startNum);
       isInCommand = 1;
-      lockMultipleLines(startNum, (startNum+numLines));
     }
   } else {
     if (editingNumOfLines > 1) {
+      while (isLineLocked(editingStartLine) == 1) {
+        sleep(1);
+      }
+      lockLine(editingStartLine);
       // here comes the file modification
       // do stuff for the first n lines!
       printf("Line %i: %s\n", editingStartLine, inputArg);
@@ -42,9 +42,13 @@ void InsertLines(char inputArg[]) {
       editingStartLine++;
       editingNumOfLines--;
     } else {
+      while (isLineLocked(editingStartLine) == 1) {
+        sleep(1);
+      }
+      lockLine(editingStartLine);
       // here comes the file modification
       // do stuff for the last line!
-      printf("Line %i: %s\n", editingStartLine, inputArg);
+      printf("Last line %i: %s\n", editingStartLine, inputArg);
       unlockLine(editingStartLine);
       editingStartLine = 0;
       editingNumOfLines = 0;
