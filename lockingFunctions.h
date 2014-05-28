@@ -58,6 +58,17 @@ int isLineLocked(int lineNum) {
   return lockedLines[lineNum];
 }
 
+int areLinesLocked(int startLine, int endLine) {
+  int i;
+  int result = 0;
+  for (i = startLine; i <= endLine; i++) {
+    if (isLineLocked(i) == 1) {
+      result = 1;
+    }
+  }
+  return result;
+}
+
 void addIntToArray(int intVal, int position) {
   lockedLines[position] = intVal;
 }
