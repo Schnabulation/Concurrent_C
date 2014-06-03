@@ -4,7 +4,7 @@
 # Created by Steve Heller
 ################################################################################
 
-all: run test
+all: clean run test
 
 debug: run-debug test
 
