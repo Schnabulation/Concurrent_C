@@ -16,9 +16,9 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <signal.h>
-#include "lockingFunctions.h"
-#include "editorFunctions.h"
-#include "processFunctions.h"
+#include "includes/lockingFunctions.h"
+#include "includes/editorFunctions.h"
+#include "includes/processFunctions.h"
 
 int sock;
 
