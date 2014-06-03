@@ -4,18 +4,18 @@
 # Created by Steve Heller
 ################################################################################
 
-all: server client
+all: run test
 
-debug: server-debug client
+debug: run-debug test
 
-server:
-	gcc server.c -o run -lpthread
+run:
+	gcc run.c -o run -lpthread
 
-server-debug:
-	gcc server.c -o run -lpthread -g
+run-debug:
+	gcc run.c -o run -lpthread -g
 
-client:
-	gcc client.c -o test -lpthread
+test:
+	gcc test.c -o test -lpthread
 
 clean:
 	rm -rf run test
