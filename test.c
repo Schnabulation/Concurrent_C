@@ -184,6 +184,8 @@ void main() {
   testReadLines();
   testDeleteLines();
   testNumLines();
+
+/* disable for the moment
   while (breakUp == 0) {
     char input_string[256];
     char *p;
@@ -206,5 +208,6 @@ void main() {
     recv(sock,answer,1023,0);
     printf("Server answered: %s\n", answer);
   }
+*/
   close(sock);
 }
