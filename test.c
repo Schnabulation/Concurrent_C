@@ -54,7 +54,6 @@ void testInsertLines() {
     perror("send() sent a different number of bytes than expected");
   }
 
-
   char answer[1024];
   memset(answer, 0, sizeof(answer));
   recv(sock,answer,1023,0);
@@ -62,19 +61,99 @@ void testInsertLines() {
 }
 
 void testReplaceLines() {
+  printf("Testing function ReplaceLines...\n");
+  sleep(1);
+  char input_string[256];
+  int inputStringLen;
+  int count;
+  memset(input_string, 0, sizeof(input_string));
+  strcpy(input_string, "ReplaceLines 5 2");
+  inputStringLen = strlen(input_string); 
+  count = send(sock, input_string, inputStringLen, 0);
+  if (count != inputStringLen) {
+    perror("send() sent a different number of bytes than expected");
+  }
+  sleep(1);
+  memset(input_string, 0, sizeof(input_string));
+  strcpy(input_string, "This is the content of the first line");
+  inputStringLen = strlen(input_string); 
+  count = send(sock, input_string, inputStringLen, 0);
+  if (count != inputStringLen) {
+    perror("send() sent a different number of bytes than expected");
+  }
+  sleep(1);
+  memset(input_string, 0, sizeof(input_string));
+  strcpy(input_string, "This is the content of the second line");
+  inputStringLen = strlen(input_string); 
+  count = send(sock, input_string, inputStringLen, 0);
+  if (count != inputStringLen) {
+    perror("send() sent a different number of bytes than expected");
+  }
 
+  char answer[1024];
+  memset(answer, 0, sizeof(answer));
+  recv(sock,answer,1023,0);
+  printf("Server answered: %s\n", answer);
 }
 
 void testReadLines() {
+  printf("Testing function ReadLines...\n");
+  sleep(1);
+  char input_string[256];
+  int inputStringLen;
+  int count;
+  memset(input_string, 0, sizeof(input_string));
+  strcpy(input_string, "ReadLines 1 10");
+  inputStringLen = strlen(input_string); 
+  count = send(sock, input_string, inputStringLen, 0);
+  if (count != inputStringLen) {
+    perror("send() sent a different number of bytes than expected");
+  }
 
+  char answer[1024];
+  memset(answer, 0, sizeof(answer));
+  recv(sock,answer,1023,0);
+  printf("Server answered: %s\n", answer);
 }
 
 void testDeleteLines() {
+  printf("Testing function DeleteLines...\n");
+  sleep(1);
+  char input_string[256];
+  int inputStringLen;
+  int count;
+  memset(input_string, 0, sizeof(input_string));
+  strcpy(input_string, "DeleteLines 10 10");
+  inputStringLen = strlen(input_string); 
+  count = send(sock, input_string, inputStringLen, 0);
+  if (count != inputStringLen) {
+    perror("send() sent a different number of bytes than expected");
+  }
 
+  char answer[1024];
+  memset(answer, 0, sizeof(answer));
+  recv(sock,answer,1023,0);
+  printf("Server answered: %s\n", answer);
 }
 
 void testNumLines() {
+  printf("Testing function NumLines...\n");
+  sleep(1);
+  char input_string[256];
+  int inputStringLen;
+  int count;
+  memset(input_string, 0, sizeof(input_string));
+  strcpy(input_string, "NumLines");
+  inputStringLen = strlen(input_string); 
+  count = send(sock, input_string, inputStringLen, 0);
+  if (count != inputStringLen) {
+    perror("send() sent a different number of bytes than expected");
+  }
 
+  char answer[1024];
+  memset(answer, 0, sizeof(answer));
+  recv(sock,answer,1023,0);
+  printf("Server answered: %s\n", answer);
 }
 
 void main() {
@@ -101,6 +180,10 @@ void main() {
   printf("CONNECTED!\n");
   int breakUp = 0;
   testInsertLines();
+  testReplaceLines();
+  testReadLines();
+  testDeleteLines();
+  testNumLines();
   while (breakUp == 0) {
     char input_string[256];
     char *p;
