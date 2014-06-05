@@ -20,7 +20,7 @@ Then start the testclient by
 `$ ./test`.  
 The testclient will then perform some automated testing. If you want do some testing on your own you can start the client by  
 `$ ./test -manual`  
-which will start the client in manual mode.  
+which will start the client in manual mode.
 
 ## Restrictions
 This program was written to run in a UNIX environment. Namely ubuntu 12.04 with POSIX configuration.
@@ -28,4 +28,4 @@ This program was written to run in a UNIX environment. Namely ubuntu 12.04 with 
 ## Missing
 The whole file modification functions are missing. This means the server and the testclient are fully functional but no file modification is done. In the code the respective lines are marked with the text `here comes the file modification`.
 
-To make the server do file modifications one had to replace these lines with appropriate code.
+To make the server do file modifications one has to replace these lines with appropriate code.
