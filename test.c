@@ -170,12 +170,25 @@ void testNumLines() {
   printf("Server answered: %s\n", answer);
 }
 
-void main() {
+void main(int argc, char *argv[]) {
+  int manual = 0;
   signal(SIGINT, shutdownClient);
 
-  printf("**********************************\n");
-  printf("*           TESTCLIENT           *\n");
-  printf("**********************************\n");
+  if (argc > 1) {
+    if (strcmp(argv[1], "-manual") == 0) {
+      manual = 1;
+    }
+  } 
+
+  if (manual == 1) {
+    printf("**********************************\n");
+    printf("*    TESTCLIENT - MANUAL MODE    *\n");
+    printf("**********************************\n");  
+  } else {
+    printf("**********************************\n");
+    printf("*           TESTCLIENT           *\n");
+    printf("**********************************\n");
+  }
 
   struct sockaddr_in serverAddress;
   unsigned short server_port;
@@ -194,6 +207,31 @@ void main() {
   connect(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress));
 
   printf("Client started - connected on port %i\n\n", server_port);
+  
+  if (manual == 1) {
+    while (1) {
+      char input_string[256];
+      char *p;
+      unsigned int inputStringLen;
+      fgets(input_string, sizeof(input_string), stdin);       
+      if ((p = strchr(input_string, '\n')) != NULL) {
+        *p = '\0';
+      }
+      if (strcmp(input_string,"EXIT") == 0) {
+        printf("You disconnected!\n");
+        shutdownClient();
+      }
+      inputStringLen = strlen(input_string);
+      int count = send(sock, input_string, inputStringLen, 0);
+      if (count != inputStringLen) {
+        perror("send() sent a different number of bytes than expected");
+      }
+      char answer[1024];
+      memset(answer, 0, sizeof(answer));
+      recv(sock,answer,1023,0);
+      printf("Server answered: %s\n", answer);
+    }
+  }
   testInsertLines();
   testReplaceLines();
   testReadLines();
@@ -201,30 +239,4 @@ void main() {
   testNumLines();
   shutdownClient();
 
-/* disable for the moment
-  int breakUp = 0;
-  while (breakUp == 0) {
-    char input_string[256];
-    char *p;
-    unsigned int inputStringLen;
-    fgets(input_string, sizeof(input_string), stdin);       
-    if ((p = strchr(input_string, '\n')) != NULL) {
-      *p = '\0';
-    }
-    if (strcmp(input_string,"EXIT") == 0) {
-      printf("You disconnected!\n");
-      breakUp = 1;
-    }
-    inputStringLen = strlen(input_string);
-    int count = send(sock, input_string, inputStringLen, 0);
-    if (count != inputStringLen) {
-      perror("send() sent a different number of bytes than expected");
-    }
-    char answer[1024];
-    memset(answer, 0, sizeof(answer));
-    recv(sock,answer,1023,0);
-    printf("Server answered: %s\n", answer);
-  }
-  close(sock);
-*/
 }
