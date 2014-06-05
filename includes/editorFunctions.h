@@ -50,7 +50,7 @@ void InsertLines(char inputArg[]) {
       lockLine(editingStartLine);
       // here comes the file modification
       // do stuff for the last line!
-      printf("Inserted last line %i: %s\n", editingStartLine, inputArg);
+      printf("Inserted last line %i: %s\n\n", editingStartLine, inputArg);
       printToClient("INSERTED");
       unlockLine(editingStartLine);
       editingStartLine = 0;
@@ -95,7 +95,7 @@ void ReplaceLines(char inputArg[]) {
       lockLine(editingStartLine);
       // here comes the file modification
       // do stuff for the last line!
-      printf("Replaced last line %i: %s\n", editingStartLine, inputArg);
+      printf("Replaced last line %i: %s\n\n", editingStartLine, inputArg);
       printToClient("REPLACED");
       unlockLine(editingStartLine);
       editingStartLine = 0;
@@ -136,6 +136,7 @@ void ReadLines(char inputArg[]) {
       strcat(response, content);
       unlockLine(i);
     }
+    printf("\n");
     printToClient(response);
   }
 }
@@ -162,13 +163,15 @@ void DeleteLines(char inputArg[]) {
       printf("Delete line %i\n", i);
       unlockLine(i);
     }
+    printf("\n");
     printToClient("DELETED");
   }
 }
 
 void NumLines(char inputArg[]) {
-  printf("You want to know the number of lines!\n");
-  printToClient("Number of Lines");
+  printf("You want to know the number of lines!\n\n");
+  // here comes the file modification
+  printToClient("129");
 }
 
 #endif

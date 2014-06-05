@@ -25,14 +25,16 @@ void shutdownClient() {
 }
 
 void testInsertLines() {
-  printf("Testing function InsertLines...\n");
-  sleep(1);
+  printf("\nNow testing function InsertLines...\n");
+  printf("***********************************\n");
+  sleep(2);
   char input_string[256];
   int inputStringLen;
   int count;
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "InsertLines 1 2");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -41,6 +43,7 @@ void testInsertLines() {
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "This is the content of the first line");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -49,6 +52,7 @@ void testInsertLines() {
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "This is the content of the second line");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -61,14 +65,16 @@ void testInsertLines() {
 }
 
 void testReplaceLines() {
-  printf("Testing function ReplaceLines...\n");
-  sleep(1);
+  printf("\nNow testing function ReplaceLines...\n");
+  printf("************************************\n");
+  sleep(2);
   char input_string[256];
   int inputStringLen;
   int count;
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "ReplaceLines 5 2");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -77,6 +83,7 @@ void testReplaceLines() {
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "This is the content of the first line");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -85,6 +92,7 @@ void testReplaceLines() {
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "This is the content of the second line");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -97,14 +105,16 @@ void testReplaceLines() {
 }
 
 void testReadLines() {
-  printf("Testing function ReadLines...\n");
-  sleep(1);
+  printf("\nNow testing function ReadLines...\n");
+  printf("*********************************\n");
+  sleep(2);
   char input_string[256];
   int inputStringLen;
   int count;
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "ReadLines 1 10");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -117,14 +127,16 @@ void testReadLines() {
 }
 
 void testDeleteLines() {
-  printf("Testing function DeleteLines...\n");
-  sleep(1);
+  printf("\nNow testing function DeleteLines...\n");
+  printf("***********************************\n");
+  sleep(2);
   char input_string[256];
   int inputStringLen;
   int count;
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "DeleteLines 10 10");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -137,14 +149,16 @@ void testDeleteLines() {
 }
 
 void testNumLines() {
-  printf("Testing function NumLines...\n");
-  sleep(1);
+  printf("\nNow testing function NumLines...\n");
+  printf("********************************\n");
+  sleep(2);
   char input_string[256];
   int inputStringLen;
   int count;
   memset(input_string, 0, sizeof(input_string));
   strcpy(input_string, "NumLines");
   inputStringLen = strlen(input_string); 
+  printf("Sending string: %s\n", input_string);
   count = send(sock, input_string, inputStringLen, 0);
   if (count != inputStringLen) {
     perror("send() sent a different number of bytes than expected");
@@ -158,8 +172,10 @@ void testNumLines() {
 
 void main() {
   signal(SIGINT, shutdownClient);
-  printf("Starting Client!\n");
-  printf("Please wait...\n");
+
+  printf("**********************************\n");
+  printf("*           TESTCLIENT           *\n");
+  printf("**********************************\n");
 
   struct sockaddr_in serverAddress;
   unsigned short server_port;
@@ -177,15 +193,16 @@ void main() {
   sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   connect(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress));
 
-  printf("CONNECTED!\n");
-  int breakUp = 0;
+  printf("Client started - connected on port %i\n\n", server_port);
   testInsertLines();
   testReplaceLines();
   testReadLines();
   testDeleteLines();
   testNumLines();
+  shutdownClient();
 
 /* disable for the moment
+  int breakUp = 0;
   while (breakUp == 0) {
     char input_string[256];
     char *p;
@@ -208,6 +225,6 @@ void main() {
     recv(sock,answer,1023,0);
     printf("Server answered: %s\n", answer);
   }
-*/
   close(sock);
+*/
 }

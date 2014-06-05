@@ -60,7 +60,7 @@ void processInput(char inputArg[]) {
 
 void runProcess(int sock) {
   clientSock = sock;
-  printf("Client connected with process %ld!\n", (long)getpid());   
+  printf("Client connected with process id %ld!\n\n", (long)getpid());   
   while (1) {
     memset(buffer, 0, sizeof(buffer));
     recv(clientSock,buffer,1023,0);

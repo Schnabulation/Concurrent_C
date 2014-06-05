@@ -43,6 +43,9 @@ void startServer() {
   }
 
   listen(sock, 5);
+  printf("**********************************\n");
+  printf("*             SERVER             *\n");
+  printf("**********************************\n");
   printf("Server started - waiting for connection on Port %i\n",serverAddress.sin_port); 
   while(1) {
     int clientSock = accept(sock, (struct sockaddr *) & clientAddress, &clientAddressLen);
